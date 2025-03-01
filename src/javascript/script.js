@@ -66,7 +66,7 @@ form.addEventListener('submit', function (e) {
     const selectedGender = [...genders].find(input => input.checked);
     radioContainer.classList.add('invalid');
     radioContainer.classList.remove('valid');
-    genderErrorSpan.innerHTML = `${errorIcon} Selecione um gênero`;
+    genderErrorSpan.innerHTML = `${errorIcon} Selecione uma das opções`;
 
     if (selectedGender) {
         radioContainer.classList.add('valid');
