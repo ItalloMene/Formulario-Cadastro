@@ -1,55 +1,56 @@
 const form = document.querySelector('#form');
 
-form.addEventListener('submit',function (e){
+form.addEventListener('submit', function (e) {
     e.preventDefault();
 
     const fields = [
         {
-            id:'name',
+            id: 'name',
             label: 'Nome',
             validator: nameIsValid
         },
         {
-            id:'last_name',
+            id: 'last_name',
             label: 'Sobrenome',
             validator: nameIsValid
         },
         {
-            id:'birthdate',
+            id: 'birthdate',
             label: 'Nascimento',
             validator: dateIsValid
         },
         {
-            id:'email',
+            id: 'email',
             label: 'E-mail',
             validator: emailIsValid
         },
         {
-            id:'password',
+            id: 'password',
             label: 'Senha',
             validator: passwordIsSecure
         },
         {
-            id:'confirm_password',
+            id: 'confirm_password',
             label: 'Confirmar senha',
             validator: passwordMatch
         },
     ]
-    
+
     const errorIcon = '<i class="fa-solid fa-circle-exclamation"></i>';
 
-    fields.forEach(function (field){
+    fields.forEach(function (field) {
         const input = document.getElementById(field.id);
         const inputBox = input.closest('.input-box')
         const inputValue = input.value;
-        
+
         const errorSpan = inputBox.querySelector('.error');
         errorSpan.innerHTML = '';
 
-        inputBox.classList.remove('invalid')
-        inputBox.classList.add('valid')
+        inputBox.classList.remove('invalid');
+        inputBox.classList.add('valid');
 
-        const fieldValidator = field.validator(inputValue)
+        const fieldValidator = field.validator(inputValue);
+
         if (!fieldValidator.isValid) {
             errorSpan.innerHTML = `${errorIcon} ${fieldValidator.errorMessage}`;
             inputBox.classList.add('invalid');
@@ -58,7 +59,22 @@ form.addEventListener('submit',function (e){
         }
     })
 
- })
+    const genders = document.getElementsByName('gender');
+    const radioContainer = document.querySelector('.radio-container');
+    const genderErrorSpan = radioContainer.querySelector('.error');
+
+    const selectedGender = [...genders].find(input => input.checked);
+    radioContainer.classList.add('invalid');
+    radioContainer.classList.remove('valid');
+    genderErrorSpan.innerHTML = `${errorIcon} Selecione um gênero`;
+
+    if (selectedGender) {
+        radioContainer.classList.add('valid');
+        radioContainer.classList.remove('invalid');
+        genderErrorSpan.innerHTML = '';
+    }
+
+})
 
 function isEmpty(value) {
     return value === '';
@@ -80,7 +96,7 @@ function nameIsValid(value) {
 
     const min = 3;
 
-    if (value.length < min){
+    if (value.length < min) {
         validator.isValid = false;
         validator.errorMessage = `O nome deve ter no mínimo ${min} caracteres!`;
         return validator;
@@ -109,7 +125,7 @@ function dateIsValid(value) {
 
     const year = new Date(value).getFullYear();
 
-    if (year < 1920 || year > new Date ().getFullYear()) {
+    if (year < 1920 || year > new Date().getFullYear()) {
         validator.isValid = false;
         validator.errorMessage = 'Data invalida!';
         return validator;
@@ -117,7 +133,7 @@ function dateIsValid(value) {
     return validator;
 }
 
-function emailIsValid(value){
+function emailIsValid(value) {
     const validator = {
         isValid: true,
         errorMessage: null
@@ -176,7 +192,7 @@ function passwordMatch(value) {
 
     const passwordValue = document.getElementById('password').value;
 
-    if (value === '' || passwordValue !== value ) {
+    if (value === '' || passwordValue !== value) {
         validator.isValid = false;
         validator.errorMessage = 'As senhas não condizem!';
         return validator;
@@ -192,7 +208,7 @@ const passwordIcons = document.querySelectorAll('.password-icon');
 passwordIcons.forEach(icon => {
     icon.addEventListener('click', function () {
         const input = this.parentElement.querySelector('.form-control');
-        input.type = input.type ==='password' ? 'text' : 'password';
+        input.type = input.type === 'password' ? 'text' : 'password';
         this.classList.toggle('fa-eye');
     })
 })
